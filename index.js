@@ -82,7 +82,6 @@ function RadialProgressChart(query, options) {
   var dropshadowId = "dropshadow-" + Math.random();
   var filter = defs.append("filter").attr("id", dropshadowId);
   if(self.options.shadow.width > 0) {
-    
     filter.append("feGaussianBlur")
       .attr("in", "SourceAlpha")
       .attr("stdDeviation", self.options.shadow.width)
@@ -144,7 +143,21 @@ function RadialProgressChart(query, options) {
     .data(series)
     .enter().append("g");
 
-  self.field.append("path").attr("class", "progress").attr("filter", "url(#" + dropshadowId +")");
+  var progressRing = self.field.append("path")
+    .attr("class", "progress")
+    .style("fill", function (item) {
+      if (item.color.solid) {
+        return item.color.solid;
+      }
+
+      if (item.color.linearGradient || item.color.radialGradient) {
+        return "url(#gradient" + item.index + ')';
+      }
+    });
+
+  if (self.options.shadow.width > 0) {
+    progressRing.attr("filter", "url(#" + dropshadowId +")");
+  }
 
   self.field.append("path").attr("class", "bg")
     .style("fill", function (item) {
@@ -258,15 +271,6 @@ RadialProgressChart.prototype.update = function (data) {
           d3.select(this).style('fill', color);
           d3.select(this.parentNode).select('path.bg').style('fill', color);
         };
-      }
-    })
-    .style("fill", function (item) {
-      if (item.color.solid) {
-        return item.color.solid;
-      }
-
-      if (item.color.linearGradient || item.color.radialGradient) {
-        return "url(#gradient" + item.index + ')';
       }
     });
 };
