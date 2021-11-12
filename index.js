@@ -229,14 +229,21 @@ RadialProgressChart.prototype.update = function (data) {
 
   var center = self.svg.select("text.rbc-center-text");
 
+  var delay = self.options.animation.delay;
+  var duration = self.options.animation.duration;
+
+  if(self.options.animation.disable) {
+    delay = 0;
+    duration = 0;
+  }
   // progress
   self.field.select("path.progress")
     .interrupt()
     .transition()
-    .duration(self.options.animation.duration)
+    .duration(duration)
     .delay(function (d, i) {
       // delay between each item
-      return i * self.options.animation.delay;
+      return i * delay;
     })
     .ease("elastic")
     .attrTween("d", function (item) {
@@ -301,6 +308,7 @@ RadialProgressChart.normalizeOptions = function (options) {
       width: (!options.shadow || options.shadow.width === null) ? 4 : options.shadow.width
     },
     animation: {
+      disable : options.animation && options.animation.disable || false,
       duration: options.animation && options.animation.duration || 1750,
       delay: options.animation && options.animation.delay || 200
     },
@@ -328,6 +336,7 @@ RadialProgressChart.normalizeOptions = function (options) {
     };
   }
 
+  console.log(_options);
   return _options;
 };
 
