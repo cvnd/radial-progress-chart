@@ -328,7 +328,6 @@ RadialProgressChart.normalizeOptions = function (options) {
     };
   }
 
-  console.log(_options);
   return _options;
 };
 

@@ -24,10 +24,9 @@
     },
 
     animation: {
-      duration: 1750,
-      delay: 100,
+      duration: 0,
+      delay: 0,
       //delay: function(index){}
-      disable: true
     },
 
     min: 650,
@@ -89,7 +88,7 @@
   };
 
 
-  var simple = new RadialProgressChart('#simple', {series: [70, 10, 45], animation: {disable: true}});
+  var simple = new RadialProgressChart('#simple', {series: [70, 10, 45], animation: {duration: 0, delay: 0}});
 
   //simple.series[1].value = 80;
   //simple.update();
@@ -125,7 +124,6 @@
         value: 800
       }
     ],
-    animation: {disable: true}
   };
 
   var complex = new RadialProgressChart('#complex', options);
